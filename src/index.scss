@@ -1,0 +1,16 @@
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+body {
+    background: rgb(255, 255, 255);
+    background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(232, 232, 227, 1) 43%, rgba(236, 239, 241, 1) 55%, rgba(226, 226, 226, 1) 81%, rgba(231, 231, 231, 1) 95%, rgba(219, 219, 219, 1) 100%);
+
+    &::-webkit-scrollbar {
+        background-color: rgba(219, 219, 219, 1);
+        width: 0.5rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--bs-secondary);
+        border-radius: 5px;
+    }
+}

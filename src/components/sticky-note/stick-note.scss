@@ -1,0 +1,201 @@
+@import url('https://fonts.googleapis.com/css2?family=Bad+Script&family=Permanent+Marker&display=swap');
+
+.sticky-note-shadow {
+    filter: drop-shadow(5px 5px 7px rgba(33, 33, 33, 0.4));
+}
+
+.sticky-note {
+    --hue: 60;
+    --tilt: 0deg;
+
+    width: 20rem;
+    height: 20rem;
+    background-color: hsl(var(--hue), 100%, 90%);
+
+    transition: all .15s linear;
+    transform: rotate(var(--tilt)) scale(0.75);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 0;
+
+    &.fade-in {
+        transition: none;
+    }
+
+    .note-title {
+        .form-control {
+            line-height: 1;
+            margin-bottom: 0.25em;
+            height: 3em;
+        }
+    }
+
+    .note-content {
+        height: 100%;
+    }
+
+    .note-button {
+        opacity: 0;
+        transition: opacity .15s linear;
+        pointer-events: none;
+    }
+
+    .note-hue-range {
+        position: absolute;
+        top: 0;
+        width: 10rem;
+        transform: translate(50%, -100%);
+
+        .form-range::-webkit-slider-runnable-track {
+            background: linear-gradient(90deg,
+                    hsl(0, 100%, 90%) 0%,
+                    hsl(32, 100%, 90%) 14.28%,
+                    hsl(64, 100%, 90%) 28.57%,
+                    hsl(96, 100%, 90%) 42.86%,
+                    hsl(128, 100%, 90%) 57.14%,
+                    hsl(160, 100%, 90%) 71.43%,
+                    hsl(192, 100%, 90%) 85.71%,
+                    hsl(224, 100%, 90%) 100%);
+        }
+    }
+
+    .note-delete-button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translate(100%, -100%)
+    }
+
+    .note-rotate-button {
+        position: absolute;
+        bottom: -0.25rem;
+        right: 50%;
+        transform: translate(50%, 100%)
+    }
+
+    .note-expanse {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
+
+    &:hover:not(.fade-in):not(.rotating),
+    &:focus:not(.fade-in):not(.rotating) {
+        transform: initial;
+        position: relative;
+        z-index: 5;
+
+        &:not(.editing) .note-button {
+            opacity: 1;
+            pointer-events: initial;
+        }
+
+        .note-expanse {
+            margin: -2.5rem;
+        }
+    }
+
+    .note-title,
+    .note-title .form-control {
+        font-family: 'Permanent Marker', cursive;
+        font-size: 20pt;
+    }
+
+    .note-content,
+    .note-content .form-control {
+        font-family: 'Bad Script', cursive;
+        font-size: 14pt;
+    }
+
+    .form-control {
+        background-color: transparent;
+        resize: none;
+        height: 100%;
+        width: 100%;
+        padding: 0.75rem;
+        border: none;
+        border-radius: 0;
+
+        &:focus {
+            background-color: transparent;
+            box-shadow: none;
+        }
+
+        &:hover,
+        &:focus:not(:read-only) {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        &:disabled {
+            background-color: transparent;
+            cursor: pointer
+        }
+    }
+
+    textarea {
+        &::-webkit-scrollbar {
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 5px;
+            width: 0.5rem;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: var(--bs-secondary);
+            border-radius: 5px;
+        }
+    }
+
+    &:not(:hover) {
+        textarea {
+            overflow: hidden;
+        }
+    }
+
+
+    &.new:not(:hover):not(:focus),
+    &.new.fade-in {
+        opacity: .6;
+    }
+
+    &.new.fade-in {
+        animation: circleToSquare var(--animation-speed);
+        overflow: hidden;
+    }
+}
+
+.fade-in.parent {
+    animation: fadeIn var(--animation-speed);
+    overflow: hidden;
+}
+
+.parent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes circleToSquare {
+    0% {
+        border-radius: 50%;
+        width: 8rem;
+        height: 8rem;
+    }
+
+    100% {
+        border-radius: 0;
+    }
+}
