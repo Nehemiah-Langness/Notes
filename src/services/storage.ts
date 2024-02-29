@@ -1,41 +1,25 @@
-import { Note } from '../features/sticky-notes/note';
 
-export class Storage {
-	private KEY = 'notes-saved-data';
 
-	getSavedNotes(): Note[] {
+export class Storage<T> {
+	constructor(private KEY: string) { }
+
+	protected get() {
 		try {
-			const storage = localStorage.getItem(this.KEY) ?? '[]';
-			return JSON.parse(storage) ?? [];
-		} catch (error) {
+			const data = localStorage.getItem(this.KEY);
+			if (!data) {
+				return null;
+			}
+
+			return JSON.parse(data) as T;
+		}
+		catch (error) {
 			console.error(error);
-			return [];
+			return null;
 		}
 	}
 
-	saveNote(note: Note) {
-		const notes = this.getSavedNotes();
-		try {
-            const existing = notes.find(existingNote => existingNote.id === note.id);
-            const existingIndex = existing ? notes.indexOf(existing) : null;
-			const alteration = existingIndex !== null ? notes.slice(0, existingIndex).concat(note).concat(notes.slice(existingIndex + 1)) : notes.concat(note);
-			localStorage.setItem(this.KEY, JSON.stringify(alteration));
-			return alteration;
-		} catch (error) {
-			console.error(error);
-			return notes;
-		}
+	protected set(data: T) {
+		localStorage.setItem(this.KEY, JSON.stringify(data));
 	}
-
-	deleteNote(noteId: string) {
-        const notes = this.getSavedNotes();
-		try {
-			const alteration = notes.filter(note => note.id !== noteId);
-			localStorage.setItem(this.KEY, JSON.stringify(alteration));
-			return alteration;
-		} catch (error) {
-			console.error(error);
-			return notes;
-		}
-    }
 }
+

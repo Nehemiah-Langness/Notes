@@ -5,7 +5,9 @@ interface StickyNotesContext {
 	newNote: (props: { hue?: string; tilt?: string }) => void;
 	saveNote: (note: Note) => void;
     deleteNote: (id: string) => void;
-	notes: Note[];
+	notes: Note[] | undefined;
+	externalSource: string;
+	saveExternalSource: (source: string) => void
 }
 
 export const StickyNotesContext = React.createContext<StickyNotesContext>({
@@ -13,4 +15,6 @@ export const StickyNotesContext = React.createContext<StickyNotesContext>({
     deleteNote: () => {},
     saveNote: () => {},
 	notes: [],
+	externalSource: '',
+	saveExternalSource: () => {}
 });

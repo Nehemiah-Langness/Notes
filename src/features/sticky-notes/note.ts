@@ -5,4 +5,5 @@ export interface Note {
     hue: string;
     title: string;
     text: string;
+    external?: boolean;
 }

@@ -103,9 +103,9 @@ export function StickyNote({ note }: { note: Note }) {
 					onClick={() => setInEditMode(true)}
 				/>
 			</div>
-			<div className='note-button note-delete-button'>
+			{!note.external && <div className='note-button note-delete-button'>
 				<DeleteButton id={state.id} />
-			</div>
+			</div>}
 			<div className='note-button note-rotate-button'>
 				<RotateButton onClick={() => setRotating(true)} />
 			</div>
