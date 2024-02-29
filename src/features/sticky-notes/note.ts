@@ -6,4 +6,5 @@ export interface Note {
     title: string;
     text: string;
     external?: boolean;
+    link?: string;
 }

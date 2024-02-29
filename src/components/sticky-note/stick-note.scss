@@ -26,7 +26,6 @@
     .note-title {
         .form-control {
             line-height: 1;
-            margin-bottom: 0.25em;
             height: 3em;
         }
     }
@@ -103,12 +102,25 @@
     .note-title .form-control {
         font-family: 'Permanent Marker', cursive;
         font-size: 20pt;
+        height: 87px;
     }
 
     .note-content,
     .note-content .form-control {
         font-family: 'Bad Script', cursive;
         font-size: 14pt;
+    }
+
+    .external-link {
+        cursor: pointer !important;
+
+        .form-control {
+            cursor: pointer !important;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.4);
+            }
+        }
     }
 
     .form-control {
@@ -125,7 +137,7 @@
             box-shadow: none;
         }
 
-        &:hover,
+        &:hover:not(.readonly),
         &:focus:not(:read-only) {
             background-color: rgba(255, 255, 255, 0.4);
         }
@@ -134,6 +146,12 @@
             background-color: transparent;
             cursor: pointer
         }
+
+        &.readonly {
+            cursor: initial;
+        }
+
+
     }
 
     textarea {

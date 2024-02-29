@@ -46,14 +46,22 @@ export function StickyNotesProvider({ children }: PropsWithChildren<object>) {
 
 	const allNotes = useMemo(() => !externalNotes ? undefined : notes.concat(externalNotes), [externalNotes, notes])
 
-	useEffect(() =>{
+	useEffect(() => {
 		if (externalSource) {
 			setExternalNotes(undefined);
-			externalStorageStore.loadNotes().then(setExternalNotes)
+			externalStorageStore.loadNotes().then(setExternalNotes);
+
+			const interval = setInterval(() => {
+				externalStorageStore.loadNotes().then(setExternalNotes)
+			}, 15 * 1000);
+
+			return () => {
+				clearInterval(interval);
+			}
 		} else {
 			setExternalNotes([])
 		}
-	},[externalSource])
+	}, [externalSource]);
 
 	const context = useMemo(() => {
 		return {

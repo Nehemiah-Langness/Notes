@@ -8,6 +8,7 @@ interface Note {
     hue?: string;
     title: string;
     text: string;
+    link?: string;
 }
 
 app.get('/', (_req, res) => {
@@ -15,7 +16,8 @@ app.get('/', (_req, res) => {
     const externalNotes: Note[] = [{
         id: '0',
         text: 'This is a task that needs done',
-        title: 'External Task #1'
+        title: 'External Task #1',
+        link: 'https://www.github.com'
     },{
         id: '1',
         text: 'This is a task that needs done',

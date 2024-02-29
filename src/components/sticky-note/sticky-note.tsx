@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './stick-note.scss';
 import { Note } from '../../features/sticky-notes/note';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -75,16 +75,25 @@ export function StickyNote({ note }: { note: Note }) {
 		}
 	}, [onChange, rotating]);
 
+	const parentRef = useRef<HTMLDivElement>(null)
+
 	return (
 		<div
 			ref={noteRef}
 			className={'sticky-note' + (inEditMode ? ' editing' : '') + (rotating ? ' rotating' : '')}
 			style={{ '--tilt': state.tilt, '--hue': state.hue } as React.CSSProperties}
 			onMouseLeave={save}
+
 		>
 			<div className='note-expanse'></div>
-			<div className='note-title'>
+			<div ref={parentRef} className={`note-title ${note.link ? 'external-link' : ''}`} onClick={() => {
+				if (note.link) {
+					window.open(note.link, '_blank')
+				}
+			}}>
 				<Input
+					parent={parentRef}
+					readonly={note.external}
 					editing={inEditMode}
 					form={state}
 					onChange={onChange}
@@ -95,6 +104,7 @@ export function StickyNote({ note }: { note: Note }) {
 			</div>
 			<div className='note-content'>
 				<Input
+					readonly={note.external}
 					editing={inEditMode}
 					form={state}
 					onChange={onChange}
@@ -103,6 +113,7 @@ export function StickyNote({ note }: { note: Note }) {
 					onClick={() => setInEditMode(true)}
 				/>
 			</div>
+
 			{!note.external && <div className='note-button note-delete-button'>
 				<DeleteButton id={state.id} />
 			</div>}
@@ -153,28 +164,49 @@ function Input<T, TProperty extends keyof T>({
 	onKeyUp,
 	form,
 	onClick,
+	readonly,
+	parent
 }: {
 	form: T;
 	property: TProperty;
 	editing: boolean;
+	readonly?: boolean,
+	parent?: React.RefObject<HTMLDivElement> | null
 	onChange: (property: TProperty, value: string) => void;
 	onKeyUp: (event: React.KeyboardEvent) => void;
 	onClick: () => void;
 }) {
 	const value = form[property] as string;
+	const ref = useRef<HTMLTextAreaElement>(null)
+
+	useEffect(()=>{
+		if (!ref?.current || !parent?.current) {
+			return;
+		}
+		let fontSize = 20;
+		ref.current.style.fontSize = '20pt'
+		while (ref.current.scrollHeight > parent.current.scrollHeight && fontSize > 12) {
+			console.log()
+			fontSize -= 1;
+			ref.current.style.fontSize = `${fontSize}pt`;
+		}
+		
+
+	},[parent, value])
 
 	return (
 		<textarea
-			className='form-control'
-			readOnly={!editing}
+			ref={ref}
+			className={`form-control ${readonly ? 'readonly' : ''}`}
+			readOnly={!editing || readonly}
 			value={value}
 			onChange={({ target }) => onChange(property, target.value)}
 			onKeyDown={onKeyUp}
-			onClick={(e) => {
+			onClick={readonly ? undefined : (e) => {
 				onClick();
 				e.currentTarget.focus();
 			}}
-			onFocus={(e) => e.target.select()}
+			onFocus={readonly ? undefined : (e) => e.target.select()}
 		/>
 	);
 }

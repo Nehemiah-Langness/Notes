@@ -62,7 +62,11 @@ export class ExternalSourceStorage extends Storage<ExternalSource> {
 				id: note.id,
 				hue: note.hue,
 				tilt: note.tilt
-			}).concat(alterations.slice(existingIndex + 1)) : alterations.concat(note);
+			}).concat(alterations.slice(existingIndex + 1)) : alterations.concat({
+				id: note.id,
+				hue: note.hue,
+				tilt: note.tilt
+			});
 
 			this.set({
 				alterations: alteration,
