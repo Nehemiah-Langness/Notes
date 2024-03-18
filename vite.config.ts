@@ -13,8 +13,8 @@ export default defineConfig({
       name: 'Notes',
       short_name: 'Notes',
       description: 'Keep track of things with virtual sticky notes',
-      theme_color: '#fcffcc',
-      background_color: '#dbdbdb',
+      theme_color: '#2272af',
+      background_color: '#f8f9fa',
       icons: [
         {
           src: 'logo192x192.png',
